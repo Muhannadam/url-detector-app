@@ -10,13 +10,19 @@ MODEL_PATH = "random_forest_url_model.pkl"
 FEATURES_PATH = "feature_columns.pkl"
 GDRIVE_FILE_ID = "11XOMMCrE8IKd8lRhra3dGyTlLv2RQJsn"
 
-if not os.path.exists(MODEL_PATH):
-    url = f"https://drive.google.com/uc?export=download&id={GDRIVE_FILE_ID}"
-    urllib.request.urlretrieve(url, MODEL_PATH)
+# أضف هذا الديكوريتور (Decorator) فوق دالة التحميل
+@st.cache_resource
+def load_model_and_columns():
+    if not os.path.exists(MODEL_PATH):
+        url = f"https://drive.google.com/uc?export=download&id={GDRIVE_FILE_ID}"
+        urllib.request.urlretrieve(url, MODEL_PATH)
+    
+    _model = joblib.load(MODEL_PATH)
+    _columns = joblib.load(FEATURES_PATH)
+    return _model, _columns
 
-# تحميل النموذج وملف الأعمدة
-model = joblib.load(MODEL_PATH)
-columns = joblib.load(FEATURES_PATH)
+# استدعاء الدالة
+model, columns = load_model_and_columns()
 
 # دالة استخراج الميزات من الرابط
 def extract_features(url):
