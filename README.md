@@ -55,7 +55,7 @@
 
 ### عبر Streamlit Cloud (مباشر)
 
-🔗 [افتح التطبيق من هنا](https://malicious-url-detector.streamlit.app/)
+🔗 [افتح التطبيق من هنا](https://url-detector-app-mhnd.streamlit.app/)
 
 ### محليًا:
 
