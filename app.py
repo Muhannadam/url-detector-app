@@ -97,15 +97,3 @@ with tab2:
 📧 تم تطويره بواسطة: **مهنّد المنتشري**  
 [🔗 GitHub](https://github.com) | [🔗 LinkedIn](https://www.linkedin.com)
 """)
-
----
-
-## ✅ جاهز للرفع
-
-هل ترغب أن أرسل لك نسخة `.zip` تحتوي على:
-- `app.py` (بهذا التنسيق الكامل)
-- `requirements.txt`
-- `README.md`
-- دليل النشر على GitHub وStreamlit Cloud؟
-
-أو هل تريد إضافة تبويب ثالث لتجربة مجموعة روابط دفعة واحدة؟
