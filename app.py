@@ -95,6 +95,6 @@ with tab2:
 
 ---
 
-📧 تم تطويره بواسطة: **مهنّد المنتشري**  
-[🔗 GitHub](https://github.com) | [🔗 LinkedIn](https://www.linkedin.com)
+تم تطويره بواسطة: **مهنّد المنتشري**  
+[GitHub](https://github.com/Muhannadam/url-detector-app/blob/main/README.md) | [LinkedIn](https://www.linkedin.com)
 """)
