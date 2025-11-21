@@ -58,7 +58,7 @@ tab1, tab2 = st.tabs(["تحقق من رابط", "ℹ️ حول المشروع"])
 # التبويب الأول
 with tab1:
     st.subheader("أدخل الرابط المراد فحصه:")
-    #url = st.text_input("مثال: https://secure-login.example.com/account")
+    url = st.text_input("")
 
     if url:
         features = pd.DataFrame([extract_features(url)], columns=columns)
