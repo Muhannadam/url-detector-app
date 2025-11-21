@@ -87,17 +87,3 @@ with tab2:
     """)
 
 ---
-
-## ✅ التعليمات التالية:
-
-1. احفظ هذا الكود باسم `app.py`
-2. تأكد أن لديك الملفات:
-   - `feature_columns.pkl` (ارفعه مع الريبو في GitHub)
-   - `random_forest_url_model.pkl` محفوظ في Google Drive
-3. ارفع المشروع إلى GitHub
-4. انشره عبر [Streamlit Cloud](https://streamlit.io/cloud)
-
----
-
-هل ترغب أن أرسل لك المشروع كـ `.zip` جاهز للرفع؟  
-أو أساعدك في تصميم شعار أو صفحة `About` مرئية أكثر؟
