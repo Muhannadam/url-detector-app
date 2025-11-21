@@ -85,5 +85,3 @@ with tab2:
 تم تطوير هذا المشروع بواسطة **Muhannad Almuntashiri**  
 [LinkedIn](https://www.linkedin.com) | [GitHub](https://github.com)
     """)
-
----
