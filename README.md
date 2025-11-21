@@ -22,7 +22,7 @@
 - **الخوارزمية:** Random Forest Classifier
 - **الدقة:** 92%
 - **AUC (منحنى ROC):** 0.96
-- **مصدر البيانات:** [Kaggle Phishing URLs dataset](https://www.kaggle.com/datasets)
+- **مصدر البيانات:** [Kaggle Phishing URLs dataset](https://www.kaggle.com/datasets/shivamb/spam-url-prediction)
 - **التحكم في البيانات:** تم موازنة الفئات باستخدام upsampling للتغلب على التحيز تجاه الفئة الأكبر.
 
 ### الميزات المستخرجة من الروابط:
