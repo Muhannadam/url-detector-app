@@ -33,7 +33,7 @@ def extract_features(url):
     }
 
 # إعداد واجهة التطبيق
-st.set_page_config(page_title="كاشف الروابط الضارة بالذكاء الاصطناعي", layout="centered", page_icon="🛡️")
+st.set_page_config(page_title="اكتشاف الروابط الضارة بالذكاء الاصطناعي", layout="centered", page_icon="🛡️")
 
 # CSS لدعم RTL
 st.markdown("""
