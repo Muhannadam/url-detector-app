@@ -57,6 +57,7 @@ tab1, tab2 = st.tabs(["تحقق من رابط", "حول المشروع"])
 
 # التبويب الأول
 with tab1:
+    
     st.subheader("أدخل الرابط المراد فحصه:")
     url = st.text_input("")
 
@@ -73,6 +74,19 @@ with tab1:
         # عرض الميزات المستخرجة
         with st.expander("التفاصيل التقنية للرابط"):
             st.write(features.T.rename(columns={0: "القيمة"}))
+
+            # عرض أهم أسباب التصنيف (أهم الميزات)
+        with st.expander("💡 ما السبب وراء هذا التصنيف؟"):
+            importances = model.feature_importances_
+            feature_values = features.iloc[0]
+            scores = {
+                col: importances[i] * abs(feature_values[col])
+                for i, col in enumerate(columns)
+            }
+            sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+            for name, score in sorted_scores[:3]:  # عرض أهم 3 ميزات
+                st.write(f"🔸 `{name}` ساهم بنسبة تقريبية: {score:.2f}")
+
 
 # التبويب الثاني
 with tab2:
