@@ -49,16 +49,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # العنوان
-st.title("🛡️ كاشف الروابط المشبوهة باستخدام الذكاء الاصطناعي")
+st.title("كاشف الروابط المشبوهة باستخدام الذكاء الاصطناعي")
 st.markdown("تحقق من الروابط المشكوك فيها باستخدام نموذج مدرّب للتصنيف الذكي.")
 
 # التبويبات
-tab1, tab2 = st.tabs(["🔎 تحقق من رابط", "ℹ️ حول المشروع"])
+tab1, tab2 = st.tabs(["تحقق من رابط", "ℹ️ حول المشروع"])
 
 # التبويب الأول
 with tab1:
-    st.subheader("🚨 أدخل الرابط المراد فحصه:")
-    url = st.text_input("مثال: https://secure-login.example.com/account")
+    st.subheader("أدخل الرابط المراد فحصه:")
+    #url = st.text_input("مثال: https://secure-login.example.com/account")
 
     if url:
         features = pd.DataFrame([extract_features(url)], columns=columns)
