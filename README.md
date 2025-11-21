@@ -1,45 +1,110 @@
-# 🛡️ Arabic AI-Powered Malicious URL Detector
+# 🛡️ كاشف الروابط الخبيثة باستخدام الذكاء الاصطناعي (باللغة العربية)
 
-A bilingual (Arabic-first) web application built with **Streamlit** that intelligently detects whether a given URL is malicious or benign using a trained **Random Forest Classifier**.
+مشروع ويب تفاعلي مبني باستخدام [Streamlit](https://streamlit.io)، يقوم بتحليل وتصنيف الروابط (URLs) لاكتشاف ما إذا كانت **خبيثة (ضارة)** أم **سليمة**، بالاعتماد على نموذج ذكاء اصطناعي مدرّب باستخدام خوارزمية Random Forest.
 
-> 💡 Powered by handcrafted features extracted from raw URLs + an ML model trained on thousands of phishing and benign links.
-
----
-
-## 🚀 Live Demo
-
-🖥️ [Launch the App on Streamlit Cloud](https://malicious-url-detector.streamlit.app/)  
-Paste any URL and instantly get a prediction.
+> ✅ يدعم اللغة العربية بالكامل (واجهة من اليمين إلى اليسار)، ويشرح للمستخدم سبب التصنيف بناءً على الميزات التحليلية.
 
 ---
 
-## 🔍 Key Features
+## 🎯 الهدف من المشروع
 
-- ✅ **Arabic-first interface with RTL support**
-- 📎 Extracts 9 handcrafted features from the input URL
-- 🧠 Uses a trained **Random Forest** model with 92% accuracy (AUC = 0.96)
-- 🔐 Designed for cybersecurity education and awareness
-- 💬 Explains prediction with top 3 contributing features ("Why was this classified as malicious?")
-- 📊 Includes technical breakdown per input
+تم تطوير هذا المشروع كجزء من متطلبات مقرر **EMAI-644: الذكاء الاصطناعي في الأمن السيبراني** – برنامج الماجستير المهني في الذكاء الاصطناعي، جامعة الملك عبدالعزيز، فصل خريف 2025.
 
----
-
-## 🧠 Machine Learning Model
-
-- **Algorithm**: Random Forest Classifier
-- **Input features**:
-  - URL length
-  - Number of dots, hyphens, slashes
-  - Presence of IP address
-  - Use of HTTPS
-  - Suspicious keywords (`login`, `verify`, etc.)
-  - Use of `@` symbol
-  - Number of digits
-- **Trained on**: A balanced phishing URL dataset (upsampled)
-
-The trained model is hosted on **Google Drive** and auto-loaded on first run.
+يهدف المشروع إلى:
+- استخدام تعلم الآلة لحماية المستخدم من الروابط الضارة والمشبوهة.
+- بناء نموذج يعتمد على استخراج خصائص ذكية من الرابط بدون الحاجة إلى الوصول للموقع.
+- تقديم واجهة عربية سهلة للمستخدم مع تفسير مفصل لنتائج التنبؤ.
 
 ---
 
-## 📁 Project Structure
+## 🧠 تفاصيل الذكاء الاصطناعي
 
+- **الخوارزمية:** Random Forest Classifier
+- **الدقة:** 92%
+- **AUC (منحنى ROC):** 0.96
+- **مصدر البيانات:** [Kaggle Phishing URLs dataset](https://www.kaggle.com/datasets)
+- **التحكم في البيانات:** تم موازنة الفئات باستخدام upsampling للتغلب على التحيز تجاه الفئة الأكبر.
+
+### 🔍 الميزات المستخرجة من الروابط:
+
+| الميزة | الوصف |
+|--------|-------|
+| `url_length` | طول الرابط |
+| `num_dots` | عدد النقاط |
+| `num_hyphens` | عدد الشرطات |
+| `num_slashes` | عدد علامات / |
+| `has_ip` | هل يحتوي على عنوان IP؟ |
+| `has_https` | هل يحتوي على https؟ |
+| `has_at_symbol` | هل يحتوي على الرمز @؟ |
+| `num_digits` | عدد الأرقام في الرابط |
+| `suspicious_words` | كلمات مريبة مثل: login, verify, account |
+
+---
+
+## 🖥️ واجهة المستخدم
+
+- ✅ تصميم كامل باللغة العربية
+- ✅ تخطيط RTL (من اليمين إلى اليسار)
+- 🧭 تبويبان رئيسيان:
+  - **تحقق من رابط:** يسمح بفحص أي رابط وتحليل نتيجته.
+  - **حول المشروع:** يحتوي على تفاصيل تقنية وأكاديمية.
+- 💬 تفسير ذكي للنتيجة: يعرض أهم 3 أسباب أدت إلى التصنيف.
+
+---
+
+## 🚀 تشغيل المشروع
+
+### عبر Streamlit Cloud (مباشر)
+
+🔗 [افتح التطبيق من هنا](https://malicious-url-detector.streamlit.app/)
+
+### محليًا:
+
+```bash
+git clone https://github.com/Muhannadam/url-detector-app.git
+cd url-detector-app
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+---
+
+## 📁 هيكل المشروع
+
+```
+📦 url-detector-app/
+├── app.py                   # كود واجهة ستريملت
+├── requirements.txt         # ملف المكتبات
+├── feature_columns.pkl      # قائمة الميزات المستخدمة (لا يشمل النموذج لتقليل الحجم)
+└── README.md                # هذا الملف
+```
+
+> 🔐 ملاحظة: يتم تحميل النموذج تلقائيًا من Google Drive عند أول تشغيل باستخدام رابط مباشر.
+
+---
+
+## 📚 سياق أكاديمي
+
+- 📘 **اسم المقرر:** EMAI-644: AI for Cybersecurity  
+- 🏫 **الجهة الأكاديمية:** جامعة الملك عبدالعزيز (KAU)  
+- 👨‍💻 **الطالب:** مهنّد المنتشري  
+- 📅 **الفصل:** خريف 2025
+
+---
+
+## 🔒 التحذير
+
+هذا المشروع لأغراض تعليمية وأكاديمية فقط، ولا يُستخدم كبديل لأنظمة الحماية الاحترافية.
+
+---
+
+## 📜 الترخيص
+
+MIT License – مفتوح المصدر.
+
+---
+
+## 📬 تواصل
+
+- 📧 [LinkedIn](https://linkedin.com)
+- 💻 [GitHub Profile](https://github.com/Muhannadam)
