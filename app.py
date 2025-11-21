@@ -76,7 +76,7 @@ with tab1:
             st.write(features.T.rename(columns={0: "القيمة"}))
 
             # عرض أهم أسباب التصنيف (أهم الميزات)
-        with st.expander("💡 ما السبب وراء هذا التصنيف؟"):
+        with st.expander("ما السبب وراء هذا التصنيف؟"):
             importances = model.feature_importances_
             feature_values = features.iloc[0]
             scores = {
@@ -85,7 +85,7 @@ with tab1:
             }
             sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
             for name, score in sorted_scores[:3]:  # عرض أهم 3 ميزات
-                st.write(f"🔸 `{name}` ساهم بنسبة تقريبية: {score:.2f}")
+                st.write(f"- `{name}` ساهم بنسبة تقريبية: {score:.2f}")
 
 
 # التبويب الثاني
