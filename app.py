@@ -5,7 +5,7 @@ import urllib.request
 import os
 import re
 
-# تحميل النموذج من Google Drive مرة واحدة فقط
+# تحميل النموذج من Google Drive
 MODEL_PATH = "random_forest_url_model.pkl"
 FEATURES_PATH = "feature_columns.pkl"
 GDRIVE_FILE_ID = "11XOMMCrE8IKd8lRhra3dGyTlLv2RQJsn"
@@ -32,16 +32,30 @@ def extract_features(url):
         'suspicious_words': int(any(w in url.lower() for w in ['login', 'verify', 'update', 'secure', 'account']))
     }
 
-# واجهة رئيسية
-st.set_page_config(page_title="AI Malicious URL Detector", layout="centered", page_icon="🛡️")
+# إعداد واجهة التطبيق
+st.set_page_config(page_title="كاشف الروابط الضارة بالذكاء الاصطناعي", layout="centered", page_icon="🛡️")
 
-st.title("🛡️ AI-based Malicious URL Detector")
-st.markdown("تحقق من الروابط باستخدام نموذج ذكي مدرب للكشف عن المواقع المشبوهة.")
+# CSS لدعم RTL
+st.markdown("""
+    <style>
+    body, .main, .stApp {
+        direction: rtl;
+        text-align: right;
+    }
+    .stTextInput label, .stTextArea label, .stSelectbox label, .stNumberInput label {
+        float: right;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# تبويبات: فحص الرابط / معلومات
+# العنوان
+st.title("🛡️ كاشف الروابط المشبوهة باستخدام الذكاء الاصطناعي")
+st.markdown("تحقق من الروابط المشكوك فيها باستخدام نموذج مدرّب للتصنيف الذكي.")
+
+# التبويبات
 tab1, tab2 = st.tabs(["🔎 تحقق من رابط", "ℹ️ حول المشروع"])
 
-# ========== التبويب 1 ==========
+# التبويب الأول
 with tab1:
     st.subheader("🚨 أدخل الرابط المراد فحصه:")
     url = st.text_input("مثال: https://secure-login.example.com/account")
@@ -52,36 +66,46 @@ with tab1:
         probability = model.predict_proba(features)[0][1]
 
         if prediction == 1:
-            st.error(f"⚠️ هذا الرابط مصنف كـ **خبيث** بنسبة {probability:.2%}")
+            st.error(f"⚠️ هذا الرابط **خبيث** بنسبة {probability:.2%}")
         else:
             st.success(f"✅ هذا الرابط **سليم** بنسبة {1 - probability:.2%}")
 
         # عرض الميزات المستخرجة
-        with st.expander("📊 الميزات المستخرجة من الرابط"):
+        with st.expander("📊 التفاصيل التقنية للرابط"):
             st.write(features.T.rename(columns={0: "القيمة"}))
 
-# ========== التبويب 2 ==========
+# التبويب الثاني
 with tab2:
-    st.subheader("ℹ️ حول هذا المشروع")
+    st.subheader("ℹ️ حول هذا النظام")
     st.markdown("""
-هذا النظام يستخدم تقنيات تعلم الآلة للكشف عن الروابط المشبوهة بناءً على ميزات مثل:
-- وجود كلمات مشبوهة مثل: `login`, `verify`, `secure`
-- طول الرابط وعدد الرموز الخاصة
-- وجود عنوان IP ضمن الرابط
-- غياب أو وجود بروتوكول HTTPS
+تم بناء هذا النظام لاكتشاف الروابط الضارة باستخدام خوارزميات تعلم الآلة. يعتمد على استخراج ميزات مهمة من الرابط مثل:
 
-### 🧠 معلومات عن النموذج:
-- **الخوارزمية:** Random Forest Classifier
-- **الدقة:** 92%
-- **AUC:** 0.96
-- **نوع المشروع:** مشروع جامعي لمقرر EMAI-644: AI for Cybersecurity - Fall 2025
-
-### 📁 الملفات المستخدمة:
-- `random_forest_url_model.pkl`: النموذج المدرب
-- `feature_columns.pkl`: أسماء الأعمدة المستخدمة في التدريب
+- وجود كلمات حساسة مثل `login`, `verify`, `secure`
+- الطول وعدد الرموز الخاصة
+- وجود IP أو عدم وجود HTTPS
 
 ---
 
-تم تطوير هذا المشروع بواسطة **Muhannad Almuntashiri**  
-[LinkedIn](https://www.linkedin.com) | [GitHub](https://github.com)
-    """)
+### 🧠 معلومات عن النموذج:
+- **الخوارزمية:** Random Forest
+- **الدقة:** 92%
+- **AUC:** 0.96
+- **بيئة التنفيذ:** مشروع جامعي لمقرر EMAI-644 - خريف 2025
+
+---
+
+📧 تم تطويره بواسطة: **مهنّد المنتشري**  
+[🔗 GitHub](https://github.com) | [🔗 LinkedIn](https://www.linkedin.com)
+""")
+
+---
+
+## ✅ جاهز للرفع
+
+هل ترغب أن أرسل لك نسخة `.zip` تحتوي على:
+- `app.py` (بهذا التنسيق الكامل)
+- `requirements.txt`
+- `README.md`
+- دليل النشر على GitHub وStreamlit Cloud؟
+
+أو هل تريد إضافة تبويب ثالث لتجربة مجموعة روابط دفعة واحدة؟
