@@ -4,6 +4,8 @@ import joblib
 import urllib.request
 import os
 import re
+import shap
+
 
 # تحميل النموذج من Google Drive
 MODEL_PATH = "random_forest_url_model.pkl"
@@ -23,6 +25,9 @@ def load_model_and_columns():
 
 # استدعاء الدالة
 model, columns = load_model_and_columns()
+
+explainer = shap.TreeExplainer(model)
+
 
 # دالة استخراج الميزات من الرابط
 def extract_features(url):
@@ -83,15 +88,25 @@ with tab1:
 
             # عرض أهم أسباب التصنيف (أهم الميزات)
         with st.expander("ما السبب وراء هذا التصنيف؟"):
-            importances = model.feature_importances_
-            feature_values = features.iloc[0]
-            scores = {
-                col: importances[i] * abs(feature_values[col])
-                for i, col in enumerate(columns)
-            }
-            sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-            for name, score in sorted_scores[:3]:  # عرض أهم 3 ميزات
-                st.write(f"- `{name}` ساهم بنسبة تقريبية: {score:.2f}")
+            shap_values = explainer.shap_values(features)
+
+           
+            shap_for_class = shap_values[1][0]
+            
+            # ترتيب الميزات حسب التأثير
+            shap_pairs = list(zip(columns, shap_for_class))
+            shap_pairs_sorted = sorted(shap_pairs, key=lambda x: abs(x[1]), reverse=True)
+        
+            st.write("### أهم الميزات التي أثرت على القرار:")
+            for feature, val in shap_pairs_sorted[:5]:
+                direction = "↑ يزيد احتمالية الخطر" if val > 0 else "↓ يقلل احتمالية الخطر"
+                st.write(f"- **{feature}**: {val:.4f} ({direction})")
+        
+            # عرض الرسم البياني داخل Streamlit
+            st.write("### مخطط SHAP")
+            shap_fig = shap.force_plot(explainer.expected_value[1], shap_for_class, features.iloc[0], matplotlib=True)
+            st.pyplot(shap_fig)
+
 
 
 # التبويب الثاني
