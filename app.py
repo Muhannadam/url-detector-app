@@ -90,11 +90,25 @@ with tab1:
         with st.expander("ما السبب وراء هذا التصنيف؟"):
             shap_values = explainer.shap_values(features)
 
-           
-            shap_for_class = shap_values[1][0]
-            
-            # ترتيب الميزات حسب التأثير
-            shap_pairs = list(zip(columns, shap_for_class))
+            # التعامل مع حالتين:
+            # 1) لو shap_values قائمة (لكل كلاس مصفوفة) -> نختار كلاس "خبيث" إن وجد
+            # 2) لو shap_values مصفوفة واحدة (n_samples, n_features) -> نأخذ الصف الوحيد
+            if isinstance(shap_values, list):
+                # لو عندك كلاسّين (0 = سليم, 1 = خبيث)
+                if len(shap_values) > 1:
+                    shap_for_sample = shap_values[1][0]      # قيم SHAP لعينة واحدة لصنف "خبيث"
+                    expected_val = explainer.expected_value[1]
+                else:
+                    # في حال كان فيه كلاس واحد فقط
+                    shap_for_sample = shap_values[0][0]
+                    expected_val = explainer.expected_value[0] if isinstance(explainer.expected_value, (list, tuple)) else explainer.expected_value
+            else:
+                # حالة: مصفوفة 2D shape = (1, n_features)
+                shap_for_sample = shap_values[0]
+                expected_val = explainer.expected_value
+        
+            # ترتيب الميزات حسب التأثير (أكبر |قيمة مطلقة| أولاً)
+            shap_pairs = list(zip(columns, shap_for_sample))
             shap_pairs_sorted = sorted(shap_pairs, key=lambda x: abs(x[1]), reverse=True)
         
             st.write("### أهم الميزات التي أثرت على القرار:")
@@ -102,10 +116,10 @@ with tab1:
                 direction = "↑ يزيد احتمالية الخطر" if val > 0 else "↓ يقلل احتمالية الخطر"
                 st.write(f"- **{feature}**: {val:.4f} ({direction})")
         
-            # عرض الرسم البياني داخل Streamlit
-            st.write("### مخطط SHAP")
-            shap_fig = shap.force_plot(explainer.expected_value[1], shap_for_class, features.iloc[0], matplotlib=True)
+            # عرض مخطط SHAP داخل Streamlit
+            shap_fig = shap.force_plot(expected_val, shap_for_sample, features.iloc[0], matplotlib=True)
             st.pyplot(shap_fig)
+
 
 
 
