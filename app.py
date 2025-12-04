@@ -85,13 +85,27 @@ with tab1:
         with st.expander("ما السبب وراء هذا التصنيف؟"):
             importances = model.feature_importances_
             feature_values = features.iloc[0]
-            scores = {
+            # حساب الدرجات الأولية
+            raw_scores = {
                 col: importances[i] * abs(feature_values[col])
                 for i, col in enumerate(columns)
             }
-            sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-            for name, score in sorted_scores[:3]:  # عرض أهم 3 ميزات
-                st.write(f"- `{name}` ساهم بنسبة تقريبية: {score:.2f}")
+            
+            # مجموع الدرجات
+            total = sum(raw_scores.values())
+            
+            # التطبيع بحيث يصبح المجموع = 1
+            normalized_scores = {
+                col: (score / total) if total != 0 else 0
+                for col, score in raw_scores.items()
+            }
+            
+            # ترتيب الميزات
+            sorted_scores = sorted(normalized_scores.items(), key=lambda x: x[1], reverse=True)
+
+            for name, score in sorted_scores[:3]:
+                st.write(f"- `{name}` ساهم بنسبة تقريبية: {score:.2%}")
+
 
 
 # التبويب الثاني
