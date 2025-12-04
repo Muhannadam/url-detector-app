@@ -5,6 +5,8 @@ import urllib.request
 import os
 import re
 import shap
+import numpy as np
+
 
 
 # تحميل النموذج من Google Drive
@@ -90,35 +92,32 @@ with tab1:
         with st.expander("ما السبب وراء هذا التصنيف؟"):
             shap_values = explainer.shap_values(features)
 
-            # التعامل مع حالتين:
-            # 1) لو shap_values قائمة (لكل كلاس مصفوفة) -> نختار كلاس "خبيث" إن وجد
-            # 2) لو shap_values مصفوفة واحدة (n_samples, n_features) -> نأخذ الصف الوحيد
+            # توحيد الشكل: نتأكد أننا نأخذ قيم لعينة واحدة وبُعد واحد
             if isinstance(shap_values, list):
-                # لو عندك كلاسّين (0 = سليم, 1 = خبيث)
+                # لو فيه كلاسّين (0 = سليم, 1 = خبيث) نأخذ كلاس الخبيث
                 if len(shap_values) > 1:
-                    shap_for_sample = shap_values[1][0]      # قيم SHAP لعينة واحدة لصنف "خبيث"
+                    sv = shap_values[1]
                     expected_val = explainer.expected_value[1]
                 else:
-                    # في حال كان فيه كلاس واحد فقط
-                    shap_for_sample = shap_values[0][0]
-                    expected_val = explainer.expected_value[0] if isinstance(explainer.expected_value, (list, tuple)) else explainer.expected_value
+                    sv = shap_values[0]
+                    ev = explainer.expected_value
+                    expected_val = ev[0] if isinstance(ev, (list, tuple, np.ndarray)) else ev
             else:
-                # حالة: مصفوفة 2D shape = (1, n_features)
-                shap_for_sample = shap_values[0]
+                sv = shap_values
                 expected_val = explainer.expected_value
         
-            # ترتيب الميزات حسب التأثير (أكبر |قيمة مطلقة| أولاً)
+            # sv شكلها (1, n_features) أو مشابه -> نأخذ الصف الأول ونفردها إلى 1D
+            shap_for_sample = np.array(sv)[0].astype(float).ravel()
+        
+            # الآن كل عنصر في shap_for_sample رقم scalar، ليس array
             shap_pairs = list(zip(columns, shap_for_sample))
-            shap_pairs_sorted = sorted(shap_pairs, key=lambda x: abs(x[1]), reverse=True)
+            shap_pairs_sorted = sorted(shap_pairs, key=lambda x: abs(float(x[1])), reverse=True)
         
             st.write("### أهم الميزات التي أثرت على القرار:")
             for feature, val in shap_pairs_sorted[:5]:
                 direction = "↑ يزيد احتمالية الخطر" if val > 0 else "↓ يقلل احتمالية الخطر"
                 st.write(f"- **{feature}**: {val:.4f} ({direction})")
-        
-            # عرض مخطط SHAP داخل Streamlit
-            shap_fig = shap.force_plot(expected_val, shap_for_sample, features.iloc[0], matplotlib=True)
-            st.pyplot(shap_fig)
+
 
 
 
