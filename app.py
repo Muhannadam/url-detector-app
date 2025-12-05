@@ -72,10 +72,8 @@ with tab1:
         probability = model.predict_proba(features)[0][1]
 
         if prediction == 1:
-            st.error(f"هذا الرابط **خبيث** بنسبة {probability:.2%}")
             st.error(f"هذا الرابط **خبيث**")
         else:
-            st.success(f"هذا الرابط **سليم** بنسبة {1 - probability:.2%}")
             st.success(f"هذا الرابط **سليم**")
 
         # عرض الميزات المستخرجة
