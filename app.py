@@ -10,7 +10,6 @@ MODEL_PATH = "random_forest_url_model.pkl"
 FEATURES_PATH = "feature_columns.pkl"
 GDRIVE_FILE_ID = "11XOMMCrE8IKd8lRhra3dGyTlLv2RQJsn"
 
-# أضف هذا الديكوريتور (Decorator) فوق دالة التحميل
 @st.cache_resource
 def load_model_and_columns():
     if not os.path.exists(MODEL_PATH):
